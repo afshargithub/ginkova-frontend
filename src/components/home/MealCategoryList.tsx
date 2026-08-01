@@ -3,26 +3,45 @@ import {
     useState,
 } from "react";
 
+import { useTranslation } from "react-i18next";
+
+import {
+    normalizeLanguageCode,
+} from "../../i18n/language";
 import { getMealCategories } from "../../services/mealCategoryService";
 import type { MealCategory } from "../../types/MealCategory";
 import MealCategoryCard from "./MealCategoryCard";
 
 export default function MealCategoryList() {
-    const [categories, setCategories] = useState<
-        MealCategory[]
-    >([]);
+    const { t, i18n } = useTranslation();
 
-    const [loading, setLoading] = useState(true);
+    const activeLanguage =
+        normalizeLanguageCode(
+            i18n.resolvedLanguage ??
+                i18n.language
+        );
 
-    const [error, setError] = useState<string | null>(
-        null
-    );
+    const [
+        categories,
+        setCategories,
+    ] = useState<MealCategory[]>([]);
+
+    const [
+        loading,
+        setLoading,
+    ] = useState(true);
+
+    const [
+        hasError,
+        setHasError,
+    ] = useState(false);
 
     useEffect(() => {
         let isActive = true;
 
         setLoading(true);
-        setError(null);
+        setHasError(false);
+        setCategories([]);
 
         getMealCategories()
             .then((data) => {
@@ -37,9 +56,7 @@ export default function MealCategoryList() {
                 );
 
                 if (isActive) {
-                    setError(
-                        "Unable to load meal categories."
-                    );
+                    setHasError(true);
                 }
             })
             .finally(() => {
@@ -51,7 +68,7 @@ export default function MealCategoryList() {
         return () => {
             isActive = false;
         };
-    }, []);
+    }, [activeLanguage]);
 
     if (loading) {
         return (
@@ -64,12 +81,12 @@ export default function MealCategoryList() {
                     text-green-800
                 "
             >
-                Loading meal categories...
+                {t("categories.loading")}
             </div>
         );
     }
 
-    if (error) {
+    if (hasError) {
         return (
             <div
                 role="alert"
@@ -83,7 +100,7 @@ export default function MealCategoryList() {
                     text-red-700
                 "
             >
-                {error}
+                {t("categories.error")}
             </div>
         );
     }
@@ -99,7 +116,7 @@ export default function MealCategoryList() {
                     text-gray-600
                 "
             >
-                No meal categories found.
+                {t("categories.empty")}
             </div>
         );
     }
@@ -113,12 +130,14 @@ export default function MealCategoryList() {
                 lg:grid-cols-3
             "
         >
-            {categories.map((category) => (
-                <MealCategoryCard
-                    key={category.id}
-                    category={category}
-                />
-            ))}
+            {categories.map(
+                (category) => (
+                    <MealCategoryCard
+                        key={category.id}
+                        category={category}
+                    />
+                )
+            )}
         </div>
     );
 }

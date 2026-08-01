@@ -3,6 +3,11 @@ import {
     useState,
 } from "react";
 
+import { useTranslation } from "react-i18next";
+
+import {
+    normalizeLanguageCode,
+} from "../../i18n/language";
 import { getMealsByCategory } from "../../services/mealService";
 import type { Meal } from "../../types/Meal";
 import MealCard from "./MealCard";
@@ -14,19 +19,34 @@ interface Props {
 export default function MealList({
     categoryId,
 }: Props) {
-    const [meals, setMeals] = useState<Meal[]>([]);
+    const { t, i18n } = useTranslation();
 
-    const [loading, setLoading] = useState(true);
+    const activeLanguage =
+        normalizeLanguageCode(
+            i18n.resolvedLanguage ??
+                i18n.language
+        );
 
-    const [error, setError] = useState<string | null>(
-        null
-    );
+    const [
+        meals,
+        setMeals,
+    ] = useState<Meal[]>([]);
+
+    const [
+        loading,
+        setLoading,
+    ] = useState(true);
+
+    const [
+        hasError,
+        setHasError,
+    ] = useState(false);
 
     useEffect(() => {
         let isActive = true;
 
         setLoading(true);
-        setError(null);
+        setHasError(false);
         setMeals([]);
 
         getMealsByCategory(categoryId)
@@ -42,9 +62,7 @@ export default function MealList({
                 );
 
                 if (isActive) {
-                    setError(
-                        "Unable to load meals."
-                    );
+                    setHasError(true);
                 }
             })
             .finally(() => {
@@ -56,7 +74,10 @@ export default function MealList({
         return () => {
             isActive = false;
         };
-    }, [categoryId]);
+    }, [
+        categoryId,
+        activeLanguage,
+    ]);
 
     if (loading) {
         return (
@@ -69,12 +90,12 @@ export default function MealList({
                     text-green-800
                 "
             >
-                Loading meals...
+                {t("meals.loading")}
             </div>
         );
     }
 
-    if (error) {
+    if (hasError) {
         return (
             <div
                 role="alert"
@@ -88,7 +109,7 @@ export default function MealList({
                     text-red-700
                 "
             >
-                {error}
+                {t("meals.error")}
             </div>
         );
     }
@@ -104,7 +125,7 @@ export default function MealList({
                     text-gray-600
                 "
             >
-                No meals found in this category.
+                {t("meals.empty")}
             </div>
         );
     }
@@ -118,12 +139,14 @@ export default function MealList({
                 lg:grid-cols-3
             "
         >
-            {meals.map((meal) => (
-                <MealCard
-                    key={meal.id}
-                    meal={meal}
-                />
-            ))}
+            {meals.map(
+                (meal) => (
+                    <MealCard
+                        key={meal.id}
+                        meal={meal}
+                    />
+                )
+            )}
         </div>
     );
 }

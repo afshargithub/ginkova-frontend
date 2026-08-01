@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import mealPlaceholder from "../../assets/images/placeholders/meal-placeholder.svg";
 import type { Meal } from "../../types/Meal";
 import { resolveMediaUrl } from "../../utils/mediaUrl";
@@ -8,6 +10,8 @@ interface Props {
 }
 
 export default function MealCard({ meal }: Props) {
+    const { t } = useTranslation();
+
     const imageUrl = resolveMediaUrl(meal.image);
 
     return (
@@ -72,7 +76,10 @@ export default function MealCard({ meal }: Props) {
                             undefined && (
                             <p>
                                 <span className="font-semibold">
-                                    Calories:
+                                    {t(
+                                        "mealCard.nutrition.calories"
+                                    )}
+                                    :
                                 </span>{" "}
                                 {
                                     meal.nutrition
@@ -85,7 +92,10 @@ export default function MealCard({ meal }: Props) {
                             undefined && (
                             <p>
                                 <span className="font-semibold">
-                                    Protein:
+                                    {t(
+                                        "mealCard.nutrition.protein"
+                                    )}
+                                    :
                                 </span>{" "}
                                 {
                                     meal.nutrition
@@ -94,52 +104,74 @@ export default function MealCard({ meal }: Props) {
                             </p>
                         )}
 
+                        {meal.nutrition
+                            .carbohydrate !==
+                            undefined && (
+                            <p>
+                                <span className="font-semibold">
+                                    {t(
+                                        "mealCard.nutrition.carbohydrate"
+                                    )}
+                                    :
+                                </span>{" "}
+                                {
+                                    meal.nutrition
+                                        .carbohydrate
+                                }
+                            </p>
+                        )}
+
                         {meal.nutrition.fat !==
                             undefined && (
                             <p>
                                 <span className="font-semibold">
-                                    Fat:
+                                    {t(
+                                        "mealCard.nutrition.fat"
+                                    )}
+                                    :
                                 </span>{" "}
                                 {meal.nutrition.fat}
                             </p>
                         )}
 
-                        {meal.nutrition.carbohydrate !== undefined && (
+                        {meal.nutrition.fiber !==
+                            undefined && (
                             <p>
                                 <span className="font-semibold">
-                                    Carbohydrate:
-                                </span>{" "}
-                                {meal.nutrition.carbohydrate}
-                            </p>
-                        )}
-
-                        {meal.nutrition.fiber !== undefined && (
-                            <p>
-                                <span className="font-semibold">
-                                    Fiber:
+                                    {t(
+                                        "mealCard.nutrition.fiber"
+                                    )}
+                                    :
                                 </span>{" "}
                                 {meal.nutrition.fiber}
                             </p>
                         )}
 
-                        {meal.nutrition.sugar !== undefined && (
+                        {meal.nutrition.sugar !==
+                            undefined && (
                             <p>
                                 <span className="font-semibold">
-                                    Sugar:
+                                    {t(
+                                        "mealCard.nutrition.sugar"
+                                    )}
+                                    :
                                 </span>{" "}
                                 {meal.nutrition.sugar}
                             </p>
                         )}
 
-                        {meal.nutrition.sodium !== undefined && (
+                        {meal.nutrition.sodium !==
+                            undefined && (
                             <p>
                                 <span className="font-semibold">
-                                    Sodium:
+                                    {t(
+                                        "mealCard.nutrition.sodium"
+                                    )}
+                                    :
                                 </span>{" "}
                                 {meal.nutrition.sodium}
                             </p>
                         )}
-
                     </div>
                 )}
 
@@ -164,7 +196,7 @@ export default function MealCard({ meal }: Props) {
                             hover:bg-blue-700
                         "
                     >
-                        View Details
+                        {t("mealCard.viewDetails")}
                     </button>
 
                     <button
@@ -180,7 +212,7 @@ export default function MealCard({ meal }: Props) {
                             hover:bg-green-700
                         "
                     >
-                        Order
+                        {t("mealCard.order")}
                     </button>
                 </div>
             </div>

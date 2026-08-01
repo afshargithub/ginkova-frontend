@@ -1,8 +1,12 @@
+import { useTranslation } from "react-i18next";
+
 import heroImage from "../../assets/hero.png";
 import mealPlaceholder from "../../assets/images/placeholders/meal-placeholder.svg";
 import AppImage from "../common/AppImage";
 
 function HeroSection() {
+    const { t } = useTranslation();
+
     return (
         <section className="px-4 py-12 md:py-20">
             <div
@@ -26,7 +30,7 @@ function HeroSection() {
                             text-green-600
                         "
                     >
-                        Smart nutrition with GINKOVA
+                        {t("hero.badge")}
                     </p>
 
                     <h1
@@ -39,9 +43,11 @@ function HeroSection() {
                             lg:text-6xl
                         "
                     >
-                        Healthy Food.
+                        {t("hero.titleFirstLine")}
+
                         <br />
-                        Personalized by AI.
+
+                        {t("hero.titleSecondLine")}
                     </h1>
 
                     <p
@@ -53,9 +59,7 @@ function HeroSection() {
                             text-gray-600
                         "
                     >
-                        Discover meals designed for your
-                        health goals, nutritional needs and
-                        lifestyle.
+                        {t("hero.description")}
                     </p>
 
                     <a
@@ -78,7 +82,7 @@ function HeroSection() {
                             focus:ring-green-200
                         "
                     >
-                        Explore Meals
+                        {t("hero.action")}
                     </a>
                 </div>
 
@@ -95,8 +99,10 @@ function HeroSection() {
                     >
                         <AppImage
                             src={heroImage}
-                            fallbackSrc={mealPlaceholder}
-                            alt="Healthy meals presented by GINKOVA"
+                            fallbackSrc={
+                                mealPlaceholder
+                            }
+                            alt={t("hero.imageAlt")}
                             loading="eager"
                             className="
                                 aspect-[4/3]

@@ -1,7 +1,11 @@
+import { useTranslation } from "react-i18next";
+
 import HeroSection from "../components/home/HeroSection";
 import MealCategoryList from "../components/home/MealCategoryList";
 
 function Home() {
+    const { t } = useTranslation();
+
     return (
         <div>
             <HeroSection />
@@ -27,7 +31,7 @@ function Home() {
                                 text-green-600
                             "
                         >
-                            Meal categories
+                            {t("homeSection.badge")}
                         </p>
 
                         <h2
@@ -38,7 +42,7 @@ function Home() {
                                 md:text-4xl
                             "
                         >
-                            Explore meal categories
+                            {t("homeSection.title")}
                         </h2>
 
                         <p
@@ -48,8 +52,9 @@ function Home() {
                                 text-gray-600
                             "
                         >
-                            Select a category to discover
-                            meals suitable for your needs.
+                            {t(
+                                "homeSection.description"
+                            )}
                         </p>
                     </div>
 

@@ -1,52 +1,102 @@
+import { useTranslation } from "react-i18next";
+
+import LanguageSwitcher from "../common/LanguageSwitcher";
+
 function Navbar() {
+    const { t } = useTranslation();
 
     return (
-
         <nav className="bg-white shadow-md">
-
-            <div className="max-w-7xl mx-auto flex justify-between items-center p-4">
-
-                {/* Logo */}
-
-                <div className="text-2xl font-bold text-green-700">
-
+            <div
+                className="
+                    mx-auto
+                    flex
+                    max-w-7xl
+                    flex-wrap
+                    items-center
+                    justify-between
+                    gap-4
+                    p-4
+                "
+            >
+                <a
+                    href="/"
+                    className="
+                        text-2xl
+                        font-bold
+                        text-green-700
+                    "
+                >
                     GINKOVA
+                </a>
 
+                <div
+                    className="
+                        flex
+                        flex-wrap
+                        items-center
+                        gap-6
+                        md:gap-8
+                    "
+                >
+                    <a
+                        href="/"
+                        className="
+                            transition
+                            hover:text-green-700
+                        "
+                    >
+                        {t("navigation.home")}
+                    </a>
+
+                    <a
+                        href="/#meal-categories"
+                        className="
+                            transition
+                            hover:text-green-700
+                        "
+                    >
+                        {t("navigation.meals")}
+                    </a>
+
+                    <a
+                        href="#"
+                        className="
+                            transition
+                            hover:text-green-700
+                        "
+                    >
+                        {t("navigation.about")}
+                    </a>
                 </div>
 
+                <div
+                    className="
+                        flex
+                        items-center
+                        gap-3
+                    "
+                >
+                    <LanguageSwitcher />
 
-                {/* Menu */}
-
-                <div className="flex gap-8">
-
-                    <a href="#">Home</a>
-
-                    <a href="#">Meals</a>
-
-                    <a href="#">About</a>
-
+                    <button
+                        type="button"
+                        className="
+                            rounded-lg
+                            bg-green-600
+                            px-4
+                            py-2
+                            text-white
+                            transition
+                            hover:bg-green-700
+                        "
+                    >
+                        {t("navigation.login")}
+                    </button>
                 </div>
-
-
-                {/* Login */}
-
-                <button
-                    className="bg-green-600
-                               text-white
-                               px-4
-                               py-2
-                               rounded-lg">
-
-                    Login
-
-                </button>
-
             </div>
-
         </nav>
-
     );
-
 }
 
 export default Navbar;

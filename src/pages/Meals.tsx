@@ -1,8 +1,11 @@
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 import MealList from "../components/meals/MealList";
 
 export default function Meals() {
+    const { t } = useTranslation();
+
     const { categoryId } = useParams<{
         categoryId: string;
     }>();
@@ -29,7 +32,9 @@ export default function Meals() {
                         text-red-700
                     "
                 >
-                    Category not found.
+                    {t(
+                        "mealsPage.categoryNotFound"
+                    )}
                 </div>
             </div>
         );
@@ -49,7 +54,7 @@ export default function Meals() {
                             text-green-600
                         "
                     >
-                        GINKOVA meals
+                        {t("mealsPage.badge")}
                     </p>
 
                     <h1
@@ -60,16 +65,17 @@ export default function Meals() {
                             md:text-4xl
                         "
                     >
-                        Meals
+                        {t("mealsPage.title")}
                     </h1>
 
                     <p className="mt-3 text-gray-600">
-                        Discover meals available in this
-                        category.
+                        {t("mealsPage.description")}
                     </p>
                 </div>
 
-                <MealList categoryId={categoryId} />
+                <MealList
+                    categoryId={categoryId}
+                />
             </div>
         </section>
     );

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import categoryPlaceholder from "../../assets/images/placeholders/category-placeholder.svg";
@@ -11,6 +12,8 @@ interface Props {
 export default function MealCategoryCard({
     category,
 }: Props) {
+    const { t } = useTranslation();
+
     return (
         <Link
             to={`/meals/category/${category.id}`}
@@ -31,7 +34,9 @@ export default function MealCategoryCard({
             <AppImage
                 src={categoryPlaceholder}
                 fallbackSrc={categoryPlaceholder}
-                alt={`${category.name} meal category`}
+                alt={t("categoryCard.imageAlt", {
+                    name: category.name,
+                })}
                 className="
                     aspect-[16/9]
                     w-full
@@ -79,7 +84,7 @@ export default function MealCategoryCard({
                         group-hover:bg-green-700
                     "
                 >
-                    Explore Meals
+                    {t("categoryCard.action")}
                 </span>
             </div>
         </Link>

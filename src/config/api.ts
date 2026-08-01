@@ -1,8 +1,11 @@
-// export const API_BASE_URL = "HTTP://127.0.0.1:8000"
-
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_API_BASE_URL;
+import {
+    getStoredLanguage,
+} from "../i18n/language";
+
+const baseURL =
+    import.meta.env.VITE_API_BASE_URL;
 
 if (!baseURL) {
     throw new Error(
@@ -14,5 +17,19 @@ const api = axios.create({
     baseURL,
     timeout: 15_000,
 });
+
+api.interceptors.request.use(
+    (config) => {
+        const language =
+            getStoredLanguage();
+
+        config.headers.set(
+            "Accept-Language",
+            language
+        );
+
+        return config;
+    }
+);
 
 export default api;
