@@ -1,71 +1,87 @@
-import { useNavigate } from "react-router-dom";
-import type { MealCategory } from "../../types/MealCategory";
+import { Link } from "react-router-dom";
 
+import categoryPlaceholder from "../../assets/images/placeholders/category-placeholder.svg";
+import type { MealCategory } from "../../types/MealCategory";
+import AppImage from "../common/AppImage";
 
 interface Props {
-
     category: MealCategory;
-
 }
 
-
-export default function MealCategoryCard({ category }: Props) {
-
-    const navigate = useNavigate();
+export default function MealCategoryCard({
+    category,
+}: Props) {
     return (
-
-        <div
+        <Link
+            to={`/meals/category/${category.id}`}
             className="
-                bg-white
+                group
+                overflow-hidden
                 rounded-2xl
+                bg-white
                 shadow-md
-                p-6
-                hover:shadow-xl
                 transition
-                cursor-pointer
+                hover:-translate-y-1
+                hover:shadow-xl
+                focus:outline-none
+                focus:ring-4
+                focus:ring-green-200
             "
-            onClick={() => navigate(`/meals/category/${category.id}`)}
         >
-
-            <h2
+            <AppImage
+                src={categoryPlaceholder}
+                fallbackSrc={categoryPlaceholder}
+                alt={`${category.name} meal category`}
                 className="
-                    text-2xl
-                    font-bold
-                    text-green-700
+                    aspect-[16/9]
+                    w-full
+                    object-cover
+                    transition
+                    duration-300
+                    group-hover:scale-105
                 "
-            >
-                {category.name}
-            </h2>
+            />
 
+            <div className="p-6">
+                <h3
+                    className="
+                        text-2xl
+                        font-bold
+                        text-green-700
+                    "
+                >
+                    {category.name}
+                </h3>
 
-            <p
-                className="
-                    mt-3
-                    text-gray-600
-                "
-            >
-                {category.description}
-            </p>
+                {category.description && (
+                    <p
+                        className="
+                            mt-3
+                            line-clamp-3
+                            text-gray-600
+                        "
+                    >
+                        {category.description}
+                    </p>
+                )}
 
-
-            <button
-                className="
-                    mt-6
-                    bg-green-600
-                    hover:bg-green-700
-                    text-white
-                    px-6
-                    py-2
-                    rounded-xl
-                "
-            >
-
-                Explore Meals
-
-            </button>
-
-
-        </div>
-
+                <span
+                    className="
+                        mt-6
+                        inline-flex
+                        rounded-xl
+                        bg-green-600
+                        px-6
+                        py-2
+                        font-semibold
+                        text-white
+                        transition
+                        group-hover:bg-green-700
+                    "
+                >
+                    Explore Meals
+                </span>
+            </div>
+        </Link>
     );
 }

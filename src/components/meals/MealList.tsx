@@ -1,115 +1,129 @@
-import { useEffect, useState } from "react";
-
-import type { Meal } from "../../types/Meal";
+import {
+    useEffect,
+    useState,
+} from "react";
 
 import { getMealsByCategory } from "../../services/mealService";
-
+import type { Meal } from "../../types/Meal";
 import MealCard from "./MealCard";
 
-
 interface Props {
-
     categoryId: string;
-
 }
 
-
-export default function MealList({ categoryId }: Props) {
-
-
+export default function MealList({
+    categoryId,
+}: Props) {
     const [meals, setMeals] = useState<Meal[]>([]);
-
 
     const [loading, setLoading] = useState(true);
 
-
+    const [error, setError] = useState<string | null>(
+        null
+    );
 
     useEffect(() => {
+        let isActive = true;
 
+        setLoading(true);
+        setError(null);
+        setMeals([]);
 
         getMealsByCategory(categoryId)
-
             .then((data) => {
-
-                setMeals(data);
-
+                if (isActive) {
+                    setMeals(data);
+                }
             })
-
-            .catch((error) => {
-
+            .catch((requestError) => {
                 console.error(
                     "Meals error:",
-                    error
+                    requestError
                 );
 
+                if (isActive) {
+                    setError(
+                        "Unable to load meals."
+                    );
+                }
             })
-
             .finally(() => {
-
-                setLoading(false);
-
+                if (isActive) {
+                    setLoading(false);
+                }
             });
 
-
+        return () => {
+            isActive = false;
+        };
     }, [categoryId]);
 
-
-
     if (loading) {
-
         return (
-
-            <p>
+            <div
+                className="
+                    rounded-2xl
+                    bg-green-50
+                    p-8
+                    text-center
+                    text-green-800
+                "
+            >
                 Loading meals...
-            </p>
-
+            </div>
         );
-
     }
 
-
+    if (error) {
+        return (
+            <div
+                role="alert"
+                className="
+                    rounded-2xl
+                    border
+                    border-red-200
+                    bg-red-50
+                    p-8
+                    text-center
+                    text-red-700
+                "
+            >
+                {error}
+            </div>
+        );
+    }
 
     if (meals.length === 0) {
-
         return (
-
-            <p>
-                No meals found.
-            </p>
-
+            <div
+                className="
+                    rounded-2xl
+                    bg-gray-100
+                    p-8
+                    text-center
+                    text-gray-600
+                "
+            >
+                No meals found in this category.
+            </div>
         );
-
     }
 
-
-
     return (
-
         <div
             className="
                 grid
-                md:grid-cols-3
                 gap-6
+                sm:grid-cols-2
+                lg:grid-cols-3
             "
         >
-
-            {
-                meals.map((meal) => (
-
-                    <MealCard
-
-                        key={meal.id}
-
-                        meal={meal}
-
-                    />
-
-                ))
-            }
-
-
+            {meals.map((meal) => (
+                <MealCard
+                    key={meal.id}
+                    meal={meal}
+                />
+            ))}
         </div>
-
     );
-
 }

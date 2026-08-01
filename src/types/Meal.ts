@@ -1,32 +1,21 @@
-//fields are according to meads Serializer file in Django back-end
+
+interface MealNutrition {
+    calories?: number;
+    protein?: number;
+    carbohydrate?: number;
+    fat?: number;
+    fiber?: number;
+    sugar?: number;
+    sodium?: number;
+}
+
 export interface Meal {
-
     id: number;
-
     name: string;
-
     description: string;
-
-    meal_type: string;
-
-    price: number;
-
     image: string | null;
-
+    meal_type: string;
     is_featured: boolean;
-
     is_active: boolean;
-
-    nutrition?: {
-
-        calories?: number;
-
-        protein?: number;
-
-        fat?: number;
-
-        carbohydrates?: number;
-
-    };
-
+    nutrition?: MealNutrition;
 }
