@@ -1,1 +1,21 @@
-@import "tailwindcss"
+@import "tailwindcss";
+
+html[lang="fa"] {
+    font-family:
+        "Vazirmatn Variable",
+        Tahoma,
+        Arial,
+        sans-serif;
+}
+
+html[lang="fa"] body,
+html[lang="fa"] button,
+html[lang="fa"] input,
+html[lang="fa"] textarea,
+html[lang="fa"] select {
+    font-family:
+        "Vazirmatn Variable",
+        Tahoma,
+        Arial,
+        sans-serif;
+}
