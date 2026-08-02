@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import categoryPlaceholder from "../../assets/images/placeholders/category-placeholder.svg";
 import type { MealCategory } from "../../types/MealCategory";
+import { resolveMediaUrl } from "../../utils/mediaUrl";
 import AppImage from "../common/AppImage";
 
 interface Props {
@@ -13,6 +14,9 @@ export default function MealCategoryCard({
     category,
 }: Props) {
     const { t } = useTranslation();
+
+    const imageUrl =
+        resolveMediaUrl(category.image);
 
     return (
         <Link
@@ -32,11 +36,12 @@ export default function MealCategoryCard({
             "
         >
             <AppImage
-                src={categoryPlaceholder}
+                src={imageUrl}
                 fallbackSrc={categoryPlaceholder}
                 alt={t("categoryCard.imageAlt", {
                     name: category.name,
                 })}
+                loading="lazy"
                 className="
                     aspect-[16/9]
                     w-full
