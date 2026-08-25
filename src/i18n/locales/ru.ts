@@ -12,6 +12,7 @@ const ru = {
         meals: "Блюда",
         about: "О нас",
         login: "Войти",
+        register: "Регистрация",
         logout: "Выйти",
     },
 

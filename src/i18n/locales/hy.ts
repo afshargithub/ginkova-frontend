@@ -12,6 +12,7 @@ const hy = {
         meals: "Ուտեստներ",
         about: "Մեր մասին",
         login: "Մուտք",
+        register: "Գրանցվել",
         logout: "Ելք",
     },
 

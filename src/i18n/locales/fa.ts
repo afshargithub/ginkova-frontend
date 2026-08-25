@@ -11,6 +11,7 @@ const fa = {
         meals: "غذاها",
         about: "درباره ما",
         login: "ورود",
+        register: "ثبت‌نام",
         logout: "خروج",
     },
 

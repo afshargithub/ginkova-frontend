@@ -12,6 +12,7 @@ const en = {
         meals: "Meals",
         about: "About",
         login: "Login",
+        register: "Register",
         logout: "Logout",
     },
 

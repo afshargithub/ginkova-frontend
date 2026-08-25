@@ -175,24 +175,48 @@ function Navbar() {
                                     </button>
                                 </div>
                             ) : (
-                                <Link
-                                    to="/login"
+                                <div
                                     className="
-                                        rounded-lg
-                                        bg-green-600
-                                        px-4
-                                        py-2
-                                        text-sm
-                                        font-medium
-                                        text-white
-                                        transition
-                                        hover:bg-green-700
+                                        flex
+                                        items-center
+                                        gap-2
                                     "
                                 >
-                                    {t(
-                                        "navigation.login"
-                                    )}
-                                </Link>
+                                    <Link
+                                        to="/login"
+                                        className="
+                                            rounded-lg
+                                            border
+                                            border-green-600
+                                            px-4
+                                            py-2
+                                            text-sm
+                                            font-medium
+                                            text-green-700
+                                            transition
+                                            hover:bg-green-50
+                                        "
+                                    >
+                                        {t("navigation.login")}
+                                    </Link>
+
+                                    <Link
+                                        to="/register"
+                                        className="
+                                            rounded-lg
+                                            bg-green-600
+                                            px-4
+                                            py-2
+                                            text-sm
+                                            font-medium
+                                            text-white
+                                            transition
+                                            hover:bg-green-700
+                                        "
+                                    >
+                                        {t("navigation.register")}
+                                    </Link>
+                                </div>
                             )}
                         </>
                     )}
