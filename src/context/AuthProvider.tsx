@@ -36,6 +36,10 @@ export default function AuthProvider({
     children,
 }: AuthProviderProps) {
 
+    // --------------------------------------------------
+    // Authentication State
+    // --------------------------------------------------
+
     const [
         user,
         setUser,
@@ -49,22 +53,41 @@ export default function AuthProvider({
     ] = useState(true);
 
 
+    // --------------------------------------------------
+    // Restore Existing Login
+    //
+    // When the browser is refreshed:
+    //
+    // Tokens
+    //   ↓
+    // GET /auth/me/
+    //   ↓
+    // Restore user
+    // --------------------------------------------------
+
     useEffect(() => {
+
         let active = true;
+
 
         async function initializeAuth() {
 
             if (!hasTokens()) {
+
                 if (active) {
+                    setUser(null);
                     setLoading(false);
                 }
 
                 return;
             }
 
+
             try {
+
                 const currentUser =
                     await getCurrentUser();
+
 
                 if (active) {
                     setUser(
@@ -73,6 +96,12 @@ export default function AuthProvider({
                 }
 
             } catch {
+
+                /*
+                 * Tokens are missing, invalid,
+                 * expired, or cannot be refreshed.
+                 */
+
                 clearTokens();
 
                 if (active) {
@@ -80,19 +109,29 @@ export default function AuthProvider({
                 }
 
             } finally {
+
                 if (active) {
                     setLoading(false);
                 }
             }
         }
 
+
         void initializeAuth();
+
 
         return () => {
             active = false;
         };
+
     }, []);
 
+
+    // --------------------------------------------------
+    // Login
+    //
+    // Phone + Password
+    // --------------------------------------------------
 
     async function loginUser(
         payload: LoginPayload
@@ -103,11 +142,24 @@ export default function AuthProvider({
                 payload
             );
 
+
         setUser(
             response.user
         );
     }
 
+
+    // --------------------------------------------------
+    // Registration Confirmation
+    //
+    // Important:
+    //
+    // Requesting the SMS code is handled separately
+    // in Register.tsx using requestRegistrationCode().
+    //
+    // This function performs registration AFTER
+    // the user enters the verification code.
+    // --------------------------------------------------
 
     async function registerUser(
         payload: RegisterPayload
@@ -118,23 +170,46 @@ export default function AuthProvider({
                 payload
             );
 
+
         setUser(
             response.user
         );
     }
 
 
+    // --------------------------------------------------
+    // Logout
+    // --------------------------------------------------
+
     async function logoutUser():
         Promise<void> {
 
         try {
+
             await logout();
 
         } finally {
-            setUser(null);
+
+            /*
+             * Always clear the React authentication
+             * state even if server logout fails.
+             */
+
+            setUser(
+                null
+            );
         }
     }
 
+
+    // --------------------------------------------------
+    // Reload Current User
+    //
+    // Useful later after changing:
+    // - first name
+    // - last name
+    // - profile information
+    // --------------------------------------------------
 
     async function refreshUser():
         Promise<void> {
@@ -142,24 +217,33 @@ export default function AuthProvider({
         const currentUser =
             await getCurrentUser();
 
+
         setUser(
             currentUser
         );
     }
 
 
+    // --------------------------------------------------
+    // Context Provider
+    // --------------------------------------------------
+
     return (
         <AuthContext.Provider
             value={{
                 user,
+
                 loading,
 
                 isAuthenticated:
                     user !== null,
 
                 loginUser,
+
                 registerUser,
+
                 logoutUser,
+
                 refreshUser,
             }}
         >

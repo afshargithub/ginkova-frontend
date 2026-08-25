@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Meals from "./pages/Meals";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
 // <Layout>
 //     <Home />
 // </Layout>
@@ -39,6 +40,10 @@ function App() {
                         element={<Register />}
                     />
 
+                    <Route
+                        path="/forgot-password"
+                        element={<ForgotPassword />}
+                    />
 
                 </Routes>
 

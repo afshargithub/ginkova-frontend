@@ -5,7 +5,6 @@ import {
 
 import {
     Link,
-    useNavigate,
 } from "react-router-dom";
 
 import {
@@ -16,41 +15,23 @@ import PasswordInput
     from "../components/common/PasswordInput";
 
 import {
-    useAuth,
-} from "../hooks/useAuth";
-
-import {
-    requestRegistrationCode,
+    confirmPasswordReset,
+    requestPasswordResetCode,
 } from "../services/authService";
-
-import {
-    getStoredLanguage,
-} from "../i18n/language";
 
 import {
     getApiErrorMessage,
 } from "../utils/apiError";
 
-import type {
-    RegisterPayload,
-} from "../types/auth";
 
-
-export default function Register() {
+export default function ForgotPassword() {
 
     const { t } =
         useTranslation();
 
-    const navigate =
-        useNavigate();
-
-    const {
-        registerUser,
-    } = useAuth();
-
 
     // --------------------------------------------------
-    // Registration State
+    // Form State
     // --------------------------------------------------
 
     const [
@@ -64,32 +45,24 @@ export default function Register() {
     ] = useState("");
 
     const [
-        firstName,
-        setFirstName,
+        newPassword,
+        setNewPassword,
     ] = useState("");
 
     const [
-        lastName,
-        setLastName,
-    ] = useState("");
-
-    const [
-        password,
-        setPassword,
-    ] = useState("");
-
-    const [
-        passwordConfirm,
-        setPasswordConfirm,
+        newPasswordConfirm,
+        setNewPasswordConfirm,
     ] = useState("");
 
 
-    // Has the SMS-code request succeeded?
+    // --------------------------------------------------
+    // Flow State
+    // --------------------------------------------------
+
     const [
         codeRequested,
         setCodeRequested,
     ] = useState(false);
-
 
     const [
         sendingCode,
@@ -97,10 +70,19 @@ export default function Register() {
     ] = useState(false);
 
     const [
-        registering,
-        setRegistering,
+        resettingPassword,
+        setResettingPassword,
     ] = useState(false);
 
+    const [
+        resetComplete,
+        setResetComplete,
+    ] = useState(false);
+
+
+    // --------------------------------------------------
+    // Message State
+    // --------------------------------------------------
 
     const [
         error,
@@ -119,7 +101,7 @@ export default function Register() {
 
     // --------------------------------------------------
     // Step 1
-    // Request SMS Verification Code
+    // Request Password Reset SMS Code
     // --------------------------------------------------
 
     async function handleRequestCode(
@@ -136,6 +118,7 @@ export default function Register() {
 
 
         if (!normalizedPhone) {
+
             setError(
                 t(
                     "auth.errors.phoneRequired"
@@ -146,12 +129,14 @@ export default function Register() {
         }
 
 
-        setSendingCode(true);
+        setSendingCode(
+            true
+        );
 
 
         try {
 
-            await requestRegistrationCode(
+            await requestPasswordResetCode(
                 normalizedPhone
             );
 
@@ -163,7 +148,7 @@ export default function Register() {
 
             setMessage(
                 t(
-                    "auth.register.codeSent"
+                    "auth.forgotPassword.codeSent"
                 )
             );
 
@@ -188,7 +173,7 @@ export default function Register() {
 
 
     // --------------------------------------------------
-    // Resend SMS Code
+    // Resend Password Reset Code
     // --------------------------------------------------
 
     async function handleResendCode() {
@@ -203,14 +188,14 @@ export default function Register() {
 
         try {
 
-            await requestRegistrationCode(
+            await requestPasswordResetCode(
                 phone.trim()
             );
 
 
             setMessage(
                 t(
-                    "auth.register.codeResent"
+                    "auth.forgotPassword.codeResent"
                 )
             );
 
@@ -248,11 +233,11 @@ export default function Register() {
             ""
         );
 
-        setPassword(
+        setNewPassword(
             ""
         );
 
-        setPasswordConfirm(
+        setNewPasswordConfirm(
             ""
         );
 
@@ -268,10 +253,10 @@ export default function Register() {
 
     // --------------------------------------------------
     // Step 2
-    // Verify SMS Code + Create Account
+    // Verify SMS + Reset Password
     // --------------------------------------------------
 
-    async function handleRegister(
+    async function handleResetPassword(
         event: FormEvent<HTMLFormElement>
     ) {
         event.preventDefault();
@@ -284,6 +269,7 @@ export default function Register() {
             verificationCode.length
             !== 6
         ) {
+
             setError(
                 t(
                     "auth.errors.invalidVerificationCode"
@@ -295,9 +281,10 @@ export default function Register() {
 
 
         if (
-            password
-            !== passwordConfirm
+            newPassword
+            !== newPasswordConfirm
         ) {
+
             setError(
                 t(
                     "auth.errors.passwordMismatch"
@@ -308,55 +295,50 @@ export default function Register() {
         }
 
 
-        setRegistering(
+        setResettingPassword(
             true
         );
 
 
         try {
 
-            const payload: RegisterPayload = {
+            await confirmPasswordReset({
                 phone:
                     phone.trim(),
 
                 code:
                     verificationCode,
 
-                password,
+                new_password:
+                    newPassword,
 
-                password_confirm:
-                    passwordConfirm,
-
-                language: getStoredLanguage() as RegisterPayload["language"],
-            };
-
-
-            if (
-                firstName.trim()
-            ) {
-                payload.first_name =
-                    firstName.trim();
-            }
+                new_password_confirm:
+                    newPasswordConfirm,
+            });
 
 
-            if (
-                lastName.trim()
-            ) {
-                payload.last_name =
-                    lastName.trim();
-            }
-
-
-            await registerUser(
-                payload
+            setResetComplete(
+                true
             );
 
 
-            navigate(
-                "/",
-                {
-                    replace: true,
-                }
+            setMessage(
+                t(
+                    "auth.forgotPassword.resetSuccess"
+                )
+            );
+
+
+            setVerificationCode(
+                ""
+            );
+
+            setNewPassword(
+                ""
+            );
+
+            setNewPasswordConfirm(
+                ""
             );
 
         } catch (requestError) {
@@ -365,14 +347,14 @@ export default function Register() {
                 getApiErrorMessage(
                     requestError,
                     t(
-                        "auth.errors.registrationFailed"
+                        "auth.errors.passwordResetFailed"
                     )
                 )
             );
 
         } finally {
 
-            setRegistering(
+            setResettingPassword(
                 false
             );
         }
@@ -380,20 +362,107 @@ export default function Register() {
 
 
     // --------------------------------------------------
-    // UI
+    // Password Reset Completed
+    // --------------------------------------------------
+
+    if (resetComplete) {
+
+        return (
+            <main
+                className="
+                    mx-auto
+                    flex
+                    min-h-[70vh]
+                    max-w-md
+                    items-center
+                    px-4
+                    py-12
+                "
+            >
+                <section
+                    className="
+                        w-full
+                        rounded-2xl
+                        border
+                        border-gray-200
+                        bg-white
+                        p-6
+                        shadow-sm
+                    "
+                >
+                    <h1
+                        className="
+                            text-2xl
+                            font-bold
+                        "
+                    >
+                        {t(
+                            "auth.forgotPassword.successTitle"
+                        )}
+                    </h1>
+
+
+                    <p
+                        role="status"
+                        className="
+                            mt-4
+                            rounded-lg
+                            bg-green-50
+                            p-3
+                            text-sm
+                            text-green-700
+                        "
+                    >
+                        {message}
+                    </p>
+
+
+                    <Link
+                        to="/login"
+                        className="
+                            mt-6
+                            block
+                            w-full
+                            rounded-lg
+                            bg-green-600
+                            px-4
+                            py-2.5
+                            text-center
+                            font-medium
+                            text-white
+                            transition
+                            hover:bg-green-700
+                        "
+                    >
+                        {t(
+                            "auth.forgotPassword.backToLogin"
+                        )}
+                    </Link>
+                </section>
+            </main>
+        );
+    }
+
+
+    // --------------------------------------------------
+    // Main UI
     // --------------------------------------------------
 
     return (
         <main
             className="
                 mx-auto
-                max-w-lg
+                flex
+                min-h-[70vh]
+                max-w-md
+                items-center
                 px-4
                 py-12
             "
         >
             <section
                 className="
+                    w-full
                     rounded-2xl
                     border
                     border-gray-200
@@ -402,6 +471,7 @@ export default function Register() {
                     shadow-sm
                 "
             >
+                {/* Title */}
                 <h1
                     className="
                         text-2xl
@@ -409,11 +479,12 @@ export default function Register() {
                     "
                 >
                     {t(
-                        "auth.register.title"
+                        "auth.forgotPassword.title"
                     )}
                 </h1>
 
 
+                {/* Description */}
                 <p
                     className="
                         mt-2
@@ -423,10 +494,10 @@ export default function Register() {
                 >
                     {codeRequested
                         ? t(
-                            "auth.register.verificationSubtitle"
+                            "auth.forgotPassword.verificationSubtitle"
                         )
                         : t(
-                            "auth.register.subtitle"
+                            "auth.forgotPassword.subtitle"
                         )
                     }
                 </p>
@@ -434,7 +505,7 @@ export default function Register() {
 
                 {/* ------------------------------------------
                     STEP 1
-                    Phone Number
+                    Enter Mobile Number
                 ------------------------------------------ */}
 
                 {!codeRequested && (
@@ -530,10 +601,10 @@ export default function Register() {
                         >
                             {sendingCode
                                 ? t(
-                                    "auth.register.sendingCode"
+                                    "auth.forgotPassword.sendingCode"
                                 )
                                 : t(
-                                    "auth.register.sendCode"
+                                    "auth.forgotPassword.sendCode"
                                 )
                             }
                         </button>
@@ -543,13 +614,13 @@ export default function Register() {
 
                 {/* ------------------------------------------
                     STEP 2
-                    Verification + Password
+                    OTP + New Password
                 ------------------------------------------ */}
 
                 {codeRequested && (
                     <form
                         onSubmit={
-                            handleRegister
+                            handleResetPassword
                         }
                         className="
                             mt-6
@@ -611,7 +682,7 @@ export default function Register() {
                                     "
                                 >
                                     {t(
-                                        "auth.register.changePhone"
+                                        "auth.forgotPassword.changePhone"
                                     )}
                                 </button>
                             </div>
@@ -702,142 +773,47 @@ export default function Register() {
                             >
                                 {sendingCode
                                     ? t(
-                                        "auth.register.sendingCode"
+                                        "auth.forgotPassword.sendingCode"
                                     )
                                     : t(
-                                        "auth.register.resendCode"
+                                        "auth.forgotPassword.resendCode"
                                     )
                                 }
                             </button>
                         </div>
 
 
-                        {/* First / Last Name */}
-                        <div
-                            className="
-                                grid
-                                gap-4
-                                sm:grid-cols-2
-                            "
-                        >
-                            <div>
-                                <label
-                                    htmlFor="first-name"
-                                    className="
-                                        mb-1
-                                        block
-                                        text-sm
-                                        font-medium
-                                    "
-                                >
-                                    {t(
-                                        "auth.common.firstName"
-                                    )}
-                                </label>
-
-                                <input
-                                    id="first-name"
-                                    name="first-name"
-                                    type="text"
-                                    autoComplete="given-name"
-                                    value={
-                                        firstName
-                                    }
-                                    onChange={
-                                        (event) =>
-                                            setFirstName(
-                                                event.target.value
-                                            )
-                                    }
-                                    className="
-                                        w-full
-                                        rounded-lg
-                                        border
-                                        border-gray-300
-                                        px-3
-                                        py-2
-                                        outline-none
-                                        focus:border-green-600
-                                    "
-                                />
-                            </div>
-
-
-                            <div>
-                                <label
-                                    htmlFor="last-name"
-                                    className="
-                                        mb-1
-                                        block
-                                        text-sm
-                                        font-medium
-                                    "
-                                >
-                                    {t(
-                                        "auth.common.lastName"
-                                    )}
-                                </label>
-
-                                <input
-                                    id="last-name"
-                                    name="last-name"
-                                    type="text"
-                                    autoComplete="family-name"
-                                    value={
-                                        lastName
-                                    }
-                                    onChange={
-                                        (event) =>
-                                            setLastName(
-                                                event.target.value
-                                            )
-                                    }
-                                    className="
-                                        w-full
-                                        rounded-lg
-                                        border
-                                        border-gray-300
-                                        px-3
-                                        py-2
-                                        outline-none
-                                        focus:border-green-600
-                                    "
-                                />
-                            </div>
-                        </div>
-
-
-                        {/* Password */}
+                        {/* New Password */}
                         <PasswordInput
-                            id="password"
+                            id="new-password"
                             label={
                                 t(
-                                    "auth.common.password"
+                                    "auth.common.newPassword"
                                 )
                             }
                             value={
-                                password
+                                newPassword
                             }
                             onChange={
-                                setPassword
+                                setNewPassword
                             }
                             autoComplete="new-password"
                         />
 
 
-                        {/* Confirm Password */}
+                        {/* Confirm New Password */}
                         <PasswordInput
-                            id="password-confirm"
+                            id="new-password-confirm"
                             label={
                                 t(
                                     "auth.common.confirmPassword"
                                 )
                             }
                             value={
-                                passwordConfirm
+                                newPasswordConfirm
                             }
                             onChange={
-                                setPasswordConfirm
+                                setNewPasswordConfirm
                             }
                             autoComplete="new-password"
                         />
@@ -877,11 +853,11 @@ export default function Register() {
                         )}
 
 
-                        {/* Create Account */}
+                        {/* Reset Password */}
                         <button
                             type="submit"
                             disabled={
-                                registering
+                                resettingPassword
                             }
                             className="
                                 w-full
@@ -897,12 +873,12 @@ export default function Register() {
                                 disabled:opacity-60
                             "
                         >
-                            {registering
+                            {resettingPassword
                                 ? t(
-                                    "auth.register.submitting"
+                                    "auth.forgotPassword.resetting"
                                 )
                                 : t(
-                                    "auth.register.submit"
+                                    "auth.forgotPassword.reset"
                                 )
                             }
                         </button>
@@ -919,10 +895,6 @@ export default function Register() {
                         text-gray-600
                     "
                 >
-                    {t(
-                        "auth.register.haveAccount"
-                    )}{" "}
-
                     <Link
                         to="/login"
                         className="
@@ -932,7 +904,7 @@ export default function Register() {
                         "
                     >
                         {t(
-                            "auth.register.loginLink"
+                            "auth.forgotPassword.backToLogin"
                         )}
                     </Link>
                 </p>

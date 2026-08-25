@@ -93,6 +93,7 @@ function Navbar() {
                         )}
                     </Link>
 
+
                     <a
                         href="/#meal-categories"
                         className="
@@ -104,6 +105,7 @@ function Navbar() {
                             "navigation.meals"
                         )}
                     </a>
+
 
                     <a
                         href="#"
@@ -140,6 +142,7 @@ function Navbar() {
                                         gap-3
                                     "
                                 >
+                                    {/* User Display */}
                                     <span
                                         className="
                                             text-sm
@@ -148,9 +151,15 @@ function Navbar() {
                                         "
                                     >
                                         {user.first_name
-                                            || user.username}
+                                            ? user.first_name
+                                            : t(
+                                                "navigation.myAccount"
+                                            )
+                                        }
                                     </span>
 
+
+                                    {/* Logout */}
                                     <button
                                         type="button"
                                         onClick={
@@ -182,6 +191,7 @@ function Navbar() {
                                         gap-2
                                     "
                                 >
+                                    {/* Login */}
                                     <Link
                                         to="/login"
                                         className="
@@ -197,9 +207,13 @@ function Navbar() {
                                             hover:bg-green-50
                                         "
                                     >
-                                        {t("navigation.login")}
+                                        {t(
+                                            "navigation.login"
+                                        )}
                                     </Link>
 
+
+                                    {/* Register */}
                                     <Link
                                         to="/register"
                                         className="
@@ -214,7 +228,9 @@ function Navbar() {
                                             hover:bg-green-700
                                         "
                                     >
-                                        {t("navigation.register")}
+                                        {t(
+                                            "navigation.register"
+                                        )}
                                     </Link>
                                 </div>
                             )}

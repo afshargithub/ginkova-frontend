@@ -37,9 +37,13 @@ export default function Login() {
     } = useAuth();
 
 
+    // --------------------------------------------------
+    // Form State
+    // --------------------------------------------------
+
     const [
-        username,
-        setUsername,
+        phone,
+        setPhone,
     ] = useState("");
 
     const [
@@ -60,6 +64,10 @@ export default function Login() {
     );
 
 
+    // --------------------------------------------------
+    // Submit Login
+    // --------------------------------------------------
+
     async function handleSubmit(
         event: FormEvent<HTMLFormElement>
     ) {
@@ -71,11 +79,12 @@ export default function Login() {
         try {
 
             await loginUser({
-                username:
-                    username.trim(),
+                phone:
+                    phone.trim(),
 
                 password,
             });
+
 
             navigate(
                 "/",
@@ -102,6 +111,10 @@ export default function Login() {
     }
 
 
+    // --------------------------------------------------
+    // UI
+    // --------------------------------------------------
+
     return (
         <main
             className="
@@ -125,6 +138,7 @@ export default function Login() {
                     shadow-sm
                 "
             >
+                {/* Title */}
                 <h1
                     className="
                         text-2xl
@@ -136,6 +150,8 @@ export default function Login() {
                     )}
                 </h1>
 
+
+                {/* Subtitle */}
                 <p
                     className="
                         mt-2
@@ -158,10 +174,10 @@ export default function Login() {
                         space-y-5
                     "
                 >
-                    {/* Username */}
+                    {/* Mobile Number */}
                     <div>
                         <label
-                            htmlFor="username"
+                            htmlFor="phone"
                             className="
                                 mb-1
                                 block
@@ -170,24 +186,23 @@ export default function Login() {
                             "
                         >
                             {t(
-                                "auth.common.username"
+                                "auth.common.phone"
                             )}
                         </label>
 
                         <input
-                            id="username"
-                            name="username"
-                            type="text"
+                            id="phone"
+                            name="phone"
+                            type="tel"
                             required
-                            autoComplete="username"
+                            autoComplete="tel"
                             dir="ltr"
-                            value={username}
+                            placeholder="+37493123456"
+                            value={phone}
                             onChange={
                                 (event) =>
-                                    setUsername(
-                                        event
-                                            .target
-                                            .value
+                                    setPhone(
+                                        event.target.value
                                     )
                             }
                             className="
@@ -198,6 +213,7 @@ export default function Login() {
                                 px-3
                                 py-2
                                 outline-none
+                                transition
                                 focus:border-green-600
                             "
                         />
@@ -218,6 +234,30 @@ export default function Login() {
                         }
                         autoComplete="current-password"
                     />
+
+
+                    {/* Forgot Password */}
+                    <div
+                        className="
+                            flex
+                            justify-end
+                        "
+                    >
+                        <Link
+                            to="/forgot-password"
+                            className="
+                                text-sm
+                                font-medium
+                                text-green-700
+                                transition
+                                hover:underline
+                            "
+                        >
+                            {t(
+                                "auth.login.forgotPassword"
+                            )}
+                        </Link>
+                    </div>
 
 
                     {/* Error */}
@@ -267,7 +307,7 @@ export default function Login() {
                 </form>
 
 
-                {/* Register Link */}
+                {/* Registration Link */}
                 <p
                     className="
                         mt-6
