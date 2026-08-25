@@ -12,6 +12,9 @@ import {
     useTranslation,
 } from "react-i18next";
 
+import PasswordInput
+    from "../components/common/PasswordInput";
+
 import {
     useAuth,
 } from "../hooks/useAuth";
@@ -23,11 +26,16 @@ import {
 
 export default function Login() {
 
-    const { loginUser, } = useAuth();
+    const { t } =
+        useTranslation();
 
-    const { t } = useTranslation();
+    const navigate =
+        useNavigate();
 
-    const navigate = useNavigate();
+    const {
+        loginUser,
+    } = useAuth();
+
 
     const [
         username,
@@ -61,11 +69,14 @@ export default function Login() {
         setLoading(true);
 
         try {
+
             await loginUser({
                 username:
                     username.trim(),
+
                 password,
             });
+
             navigate(
                 "/",
                 {
@@ -85,6 +96,7 @@ export default function Login() {
             );
 
         } finally {
+
             setLoading(false);
         }
     }
@@ -136,6 +148,7 @@ export default function Login() {
                     )}
                 </p>
 
+
                 <form
                     onSubmit={
                         handleSubmit
@@ -145,6 +158,7 @@ export default function Login() {
                         space-y-5
                     "
                 >
+                    {/* Username */}
                     <div>
                         <label
                             htmlFor="username"
@@ -184,55 +198,29 @@ export default function Login() {
                                 px-3
                                 py-2
                                 outline-none
-                                focus:border-gray-500
+                                focus:border-green-600
                             "
                         />
                     </div>
 
-                    <div>
-                        <label
-                            htmlFor="password"
-                            className="
-                                mb-1
-                                block
-                                text-sm
-                                font-medium
-                            "
-                        >
-                            {t(
+
+                    {/* Password */}
+                    <PasswordInput
+                        id="password"
+                        label={
+                            t(
                                 "auth.common.password"
-                            )}
-                        </label>
+                            )
+                        }
+                        value={password}
+                        onChange={
+                            setPassword
+                        }
+                        autoComplete="current-password"
+                    />
 
-                        <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            required
-                            autoComplete="current-password"
-                            dir="ltr"
-                            value={password}
-                            onChange={
-                                (event) =>
-                                    setPassword(
-                                        event
-                                            .target
-                                            .value
-                                    )
-                            }
-                            className="
-                                w-full
-                                rounded-lg
-                                border
-                                border-gray-300
-                                px-3
-                                py-2
-                                outline-none
-                                focus:border-gray-500
-                            "
-                        />
-                    </div>
 
+                    {/* Error */}
                     {error && (
                         <p
                             role="alert"
@@ -248,17 +236,21 @@ export default function Login() {
                         </p>
                     )}
 
+
+                    {/* Login Button */}
                     <button
                         type="submit"
                         disabled={loading}
                         className="
                             w-full
                             rounded-lg
-                            bg-black
+                            bg-green-600
                             px-4
                             py-2.5
                             font-medium
                             text-white
+                            transition
+                            hover:bg-green-700
                             disabled:cursor-not-allowed
                             disabled:opacity-60
                         "
@@ -274,6 +266,8 @@ export default function Login() {
                     </button>
                 </form>
 
+
+                {/* Register Link */}
                 <p
                     className="
                         mt-6
@@ -290,6 +284,7 @@ export default function Login() {
                         to="/register"
                         className="
                             font-medium
+                            text-green-700
                             underline
                         "
                     >

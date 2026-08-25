@@ -12,6 +12,9 @@ import {
     useTranslation,
 } from "react-i18next";
 
+import PasswordInput
+    from "../components/common/PasswordInput";
+
 import {
     useAuth,
 } from "../hooks/useAuth";
@@ -31,11 +34,16 @@ import type {
 
 export default function Register() {
 
-    const { t } = useTranslation();
-    
-    const { registerUser, } = useAuth();
-    
-    const navigate = useNavigate();
+    const { t } =
+        useTranslation();
+
+    const navigate =
+        useNavigate();
+
+    const {
+        registerUser,
+    } = useAuth();
+
 
     const [
         username,
@@ -103,34 +111,42 @@ export default function Register() {
         setLoading(true);
 
         try {
+
             const payload: RegisterPayload = {
-                username: username.trim(),
+                username:
+                    username.trim(),
 
                 password,
 
-                password_confirm: passwordConfirm,
+                password_confirm:
+                    passwordConfirm,
 
-                language:
-                    getStoredLanguage() as RegisterPayload["language"],
+                language: getStoredLanguage() as RegisterPayload["language"],
             };
+
+
             if (email.trim()) {
                 payload.email =
                     email.trim();
             }
+
 
             if (firstName.trim()) {
                 payload.first_name =
                     firstName.trim();
             }
 
+
             if (lastName.trim()) {
                 payload.last_name =
                     lastName.trim();
             }
 
+
             await registerUser(
                 payload
             );
+
 
             navigate(
                 "/",
@@ -151,6 +167,7 @@ export default function Register() {
             );
 
         } finally {
+
             setLoading(false);
         }
     }
@@ -186,6 +203,7 @@ export default function Register() {
                     )}
                 </h1>
 
+
                 <p
                     className="
                         mt-2
@@ -198,6 +216,7 @@ export default function Register() {
                     )}
                 </p>
 
+
                 <form
                     onSubmit={
                         handleSubmit
@@ -207,6 +226,7 @@ export default function Register() {
                         space-y-5
                     "
                 >
+                    {/* Username */}
                     <div>
                         <label
                             htmlFor="username"
@@ -224,6 +244,7 @@ export default function Register() {
 
                         <input
                             id="username"
+                            name="username"
                             type="text"
                             required
                             autoComplete="username"
@@ -242,10 +263,14 @@ export default function Register() {
                                 border-gray-300
                                 px-3
                                 py-2
+                                outline-none
+                                focus:border-green-600
                             "
                         />
                     </div>
 
+
+                    {/* Email */}
                     <div>
                         <label
                             htmlFor="email"
@@ -275,6 +300,7 @@ export default function Register() {
 
                         <input
                             id="email"
+                            name="email"
                             type="email"
                             autoComplete="email"
                             dir="ltr"
@@ -292,10 +318,14 @@ export default function Register() {
                                 border-gray-300
                                 px-3
                                 py-2
+                                outline-none
+                                focus:border-green-600
                             "
                         />
                     </div>
 
+
+                    {/* First Name + Last Name */}
                     <div
                         className="
                             grid
@@ -320,6 +350,7 @@ export default function Register() {
 
                             <input
                                 id="first-name"
+                                name="first-name"
                                 type="text"
                                 autoComplete="given-name"
                                 value={firstName}
@@ -336,9 +367,12 @@ export default function Register() {
                                     border-gray-300
                                     px-3
                                     py-2
+                                    outline-none
+                                    focus:border-green-600
                                 "
                             />
                         </div>
+
 
                         <div>
                             <label
@@ -357,6 +391,7 @@ export default function Register() {
 
                             <input
                                 id="last-name"
+                                name="last-name"
                                 type="text"
                                 autoComplete="family-name"
                                 value={lastName}
@@ -373,89 +408,49 @@ export default function Register() {
                                     border-gray-300
                                     px-3
                                     py-2
+                                    outline-none
+                                    focus:border-green-600
                                 "
                             />
                         </div>
                     </div>
 
-                    <div>
-                        <label
-                            htmlFor="password"
-                            className="
-                                mb-1
-                                block
-                                text-sm
-                                font-medium
-                            "
-                        >
-                            {t(
+
+                    {/* Password */}
+                    <PasswordInput
+                        id="password"
+                        label={
+                            t(
                                 "auth.common.password"
-                            )}
-                        </label>
+                            )
+                        }
+                        value={password}
+                        onChange={
+                            setPassword
+                        }
+                        autoComplete="new-password"
+                    />
 
-                        <input
-                            id="password"
-                            type="password"
-                            required
-                            autoComplete="new-password"
-                            dir="ltr"
-                            value={password}
-                            onChange={
-                                (event) =>
-                                    setPassword(
-                                        event.target.value
-                                    )
-                            }
-                            className="
-                                w-full
-                                rounded-lg
-                                border
-                                border-gray-300
-                                px-3
-                                py-2
-                            "
-                        />
-                    </div>
 
-                    <div>
-                        <label
-                            htmlFor="password-confirm"
-                            className="
-                                mb-1
-                                block
-                                text-sm
-                                font-medium
-                            "
-                        >
-                            {t(
+                    {/* Confirm Password */}
+                    <PasswordInput
+                        id="password-confirm"
+                        label={
+                            t(
                                 "auth.common.confirmPassword"
-                            )}
-                        </label>
+                            )
+                        }
+                        value={
+                            passwordConfirm
+                        }
+                        onChange={
+                            setPasswordConfirm
+                        }
+                        autoComplete="new-password"
+                    />
 
-                        <input
-                            id="password-confirm"
-                            type="password"
-                            required
-                            autoComplete="new-password"
-                            dir="ltr"
-                            value={passwordConfirm}
-                            onChange={
-                                (event) =>
-                                    setPasswordConfirm(
-                                        event.target.value
-                                    )
-                            }
-                            className="
-                                w-full
-                                rounded-lg
-                                border
-                                border-gray-300
-                                px-3
-                                py-2
-                            "
-                        />
-                    </div>
 
+                    {/* Error */}
                     {error && (
                         <p
                             role="alert"
@@ -471,17 +466,21 @@ export default function Register() {
                         </p>
                     )}
 
+
+                    {/* Register Button */}
                     <button
                         type="submit"
                         disabled={loading}
                         className="
                             w-full
                             rounded-lg
-                            bg-black
+                            bg-green-600
                             px-4
                             py-2.5
                             font-medium
                             text-white
+                            transition
+                            hover:bg-green-700
                             disabled:cursor-not-allowed
                             disabled:opacity-60
                         "
@@ -497,6 +496,8 @@ export default function Register() {
                     </button>
                 </form>
 
+
+                {/* Login Link */}
                 <p
                     className="
                         mt-6
@@ -513,6 +514,7 @@ export default function Register() {
                         to="/login"
                         className="
                             font-medium
+                            text-green-700
                             underline
                         "
                     >
