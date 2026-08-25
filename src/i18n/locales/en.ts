@@ -6,11 +6,13 @@ const en = {
         armenian: "Հայերեն",
         russian: "Русский",
     },
+
     navigation: {
         home: "Home",
         meals: "Meals",
         about: "About",
         login: "Login",
+        logout: "Logout",
     },
 
     footer: {
@@ -73,6 +75,63 @@ const en = {
             fiber: "Fiber",
             sugar: "Sugar",
             sodium: "Sodium",
+        },
+    },
+
+    healthGoalsSection: {
+        badge: "Health goals",
+        title: "Choose your health goal",
+        description:
+            "Select a health goal to receive meals and nutrition recommendations suited to your needs.",
+    },
+
+    healthGoals: {
+        loading: "Loading health goals...",
+        error: "Unable to load health goals.",
+        empty: "No health goals found.",
+    },
+
+    auth: {
+        common: {
+            username: "Username",
+            email: "Email",
+            firstName: "First name",
+            lastName: "Last name",
+            password: "Password",
+            confirmPassword: "Confirm password",
+            optional: "optional",
+        },
+
+        login: {
+            title: "Sign in to GINKOVA",
+            subtitle:
+                "Sign in to your account to continue.",
+            submit: "Sign in",
+            submitting: "Signing in...",
+            noAccount:
+                "Don't have an account?",
+            registerLink: "Register",
+        },
+
+        register: {
+            title: "Create your GINKOVA account",
+            subtitle:
+                "Enter your information to create an account.",
+            submit: "Create account",
+            submitting:
+                "Creating account...",
+            haveAccount:
+                "Already have an account?",
+            loginLink: "Sign in",
+        },
+
+        errors: {
+            loginFailed:
+                "Unable to sign in.",
+            registrationFailed:
+                "Unable to create the account.",
+            passwordMismatch:
+                "The passwords do not match.",
         },
     },
 };

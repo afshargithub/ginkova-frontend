@@ -1,37 +1,60 @@
 import type { HealthGoal } from "../../types/HealthGoal";
 
-
 interface Props {
     goal: HealthGoal;
 }
 
-
-function HealthGoalCard({ goal }: Props) {
+export default function HealthGoalCard({
+    goal,
+}: Props) {
+    const icon = goal.icon.trim() || "🎯";
 
     return (
-        <div className="bg-white rounded-xl shadow-md p-5 m-3">
-
-            <div className="text-3xl mb-3">
-                {goal.icon}
+        <article
+            className="
+                h-full
+                rounded-2xl
+                border
+                border-green-100
+                bg-white
+                p-6
+                shadow-md
+                transition
+                hover:-translate-y-1
+                hover:shadow-xl
+            "
+        >
+            <div
+                aria-hidden="true"
+                className="
+                    mb-4
+                    text-4xl
+                "
+            >
+                {icon}
             </div>
 
-            <h3 className="text-xl font-bold text-green-700">
+            <h3
+                className="
+                    text-xl
+                    font-bold
+                    text-green-700
+                "
+            >
                 {goal.name}
             </h3>
 
-            <p className="text-gray-600 mt-2">
-                {goal.description}
-            </p>
-
-            <button className="mt-4 bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700">
-
-                Explore
-
-            </button>
-
-        </div>
+            {goal.description && (
+                <p
+                    className="
+                        mt-3
+                        leading-7
+                        text-gray-600
+                    "
+                >
+                    {goal.description}
+                </p>
+            )}
+        </article>
     );
 }
-
-
-export default HealthGoalCard;

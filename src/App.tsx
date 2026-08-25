@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Home from "./pages/Home";
 import Meals from "./pages/Meals";
-
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 // <Layout>
 //     <Home />
 // </Layout>
@@ -26,6 +27,16 @@ function App() {
                     <Route
                         path="/meals/category/:categoryId"
                         element={<Meals />}
+                    />
+
+                    <Route
+                        path="/login"
+                        element={<Login />}
+                    />
+
+                    <Route
+                        path="/register"
+                        element={<Register />}
                     />
 
 

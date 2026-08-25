@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 
+import HealthGoalList from "../components/health/HealthGoalList";
 import HeroSection from "../components/home/HeroSection";
 import MealCategoryList from "../components/home/MealCategoryList";
 
@@ -9,6 +10,64 @@ function Home() {
     return (
         <div>
             <HeroSection />
+
+            <section
+                id="health-goals"
+                className="
+                    scroll-mt-24
+                    bg-green-50
+                    px-4
+                    py-12
+                    md:py-16
+                "
+            >
+                <div className="mx-auto max-w-7xl">
+                    <div className="mb-10">
+                        <p
+                            className="
+                                mb-2
+                                text-sm
+                                font-semibold
+                                uppercase
+                                tracking-wider
+                                text-green-600
+                            "
+                        >
+                            {t(
+                                "healthGoalsSection.badge"
+                            )}
+                        </p>
+
+                        <h2
+                            className="
+                                text-3xl
+                                font-bold
+                                text-gray-900
+                                md:text-4xl
+                            "
+                        >
+                            {t(
+                                "healthGoalsSection.title"
+                            )}
+                        </h2>
+
+                        <p
+                            className="
+                                mt-3
+                                max-w-2xl
+                                leading-7
+                                text-gray-600
+                            "
+                        >
+                            {t(
+                                "healthGoalsSection.description"
+                            )}
+                        </p>
+                    </div>
+
+                    <HealthGoalList />
+                </div>
+            </section>
 
             <section
                 id="meal-categories"

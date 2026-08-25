@@ -11,6 +11,7 @@ const fa = {
         meals: "غذاها",
         about: "درباره ما",
         login: "ورود",
+        logout: "خروج",
     },
 
     footer: {
@@ -78,6 +79,67 @@ const fa = {
             fiber: "فیبر",
             sugar: "قند",
             sodium: "سدیم",
+        },
+    },
+
+
+    healthGoalsSection: {
+        badge: "اهداف سلامتی",
+        title: "هدف سلامتی خود را انتخاب کنید",
+        description:
+            "برای دریافت غذاها و پیشنهادهای تغذیه‌ای متناسب با نیازهای خود، یک هدف سلامتی انتخاب کنید.",
+    },
+
+    healthGoals: {
+        loading:
+            "در حال بارگذاری اهداف سلامتی...",
+        error:
+            "دریافت اهداف سلامتی ممکن نیست.",
+        empty:
+            "هیچ هدف سلامتی یافت نشد.",
+    },
+
+    auth: {
+        common: {
+            username: "نام کاربری",
+            email: "ایمیل",
+            firstName: "نام",
+            lastName: "نام خانوادگی",
+            password: "رمز عبور",
+            confirmPassword: "تکرار رمز عبور",
+            optional: "اختیاری",
+        },
+
+        login: {
+            title: "ورود به GINKOVA",
+            subtitle:
+                "برای ادامه وارد حساب کاربری خود شوید.",
+            submit: "ورود",
+            submitting: "در حال ورود...",
+            noAccount:
+                "حساب کاربری ندارید؟",
+            registerLink: "ثبت‌نام",
+        },
+
+        register: {
+            title: "ایجاد حساب GINKOVA",
+            subtitle:
+                "برای ایجاد حساب، اطلاعات خود را وارد کنید.",
+            submit: "ایجاد حساب",
+            submitting:
+                "در حال ایجاد حساب...",
+            haveAccount:
+                "قبلاً حساب ساخته‌اید؟",
+            loginLink: "ورود",
+        },
+
+        errors: {
+            loginFailed:
+                "ورود به حساب انجام نشد.",
+            registrationFailed:
+                "ایجاد حساب انجام نشد.",
+            passwordMismatch:
+                "رمزهای عبور یکسان نیستند.",
         },
     },
 };

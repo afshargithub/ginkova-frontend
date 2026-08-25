@@ -12,6 +12,7 @@ const hy = {
         meals: "Ուտեստներ",
         about: "Մեր մասին",
         login: "Մուտք",
+        logout: "Ելք",
     },
 
     footer: {
@@ -82,6 +83,69 @@ const hy = {
             fiber: "Բջջանյութ",
             sugar: "Շաքար",
             sodium: "Նատրիում",
+        },
+    },
+
+
+    healthGoalsSection: {
+        badge: "Առողջական նպատակներ",
+        title:
+            "Ընտրեք ձեր առողջական նպատակը",
+        description:
+            "Ընտրեք առողջական նպատակ՝ ձեր կարիքներին համապատասխան ուտեստներ և սննդային առաջարկներ ստանալու համար։",
+    },
+
+    healthGoals: {
+        loading:
+            "Առողջական նպատակները բեռնվում են...",
+        error:
+            "Չհաջողվեց բեռնել առողջական նպատակները։",
+        empty:
+            "Առողջական նպատակներ չեն գտնվել։",
+    },
+
+    auth: {
+        common: {
+            username: "Օգտանուն",
+            email: "Էլ. փոստ",
+            firstName: "Անուն",
+            lastName: "Ազգանուն",
+            password: "Գաղտնաբառ",
+            confirmPassword:
+                "Կրկնել գաղտնաբառը",
+            optional: "ընտրովի",
+        },
+
+        login: {
+            title: "Մուտք GINKOVA",
+            subtitle:
+                "Շարունակելու համար մուտք գործեք ձեր հաշիվ։",
+            submit: "Մուտք",
+            submitting: "Մուտք...",
+            noAccount:
+                "Դեռ հաշիվ չունե՞ք։",
+            registerLink: "Գրանցվել",
+        },
+
+        register: {
+            title: "Ստեղծել GINKOVA հաշիվ",
+            subtitle:
+                "Մուտքագրեք ձեր տվյալները՝ հաշիվ ստեղծելու համար։",
+            submit: "Ստեղծել հաշիվ",
+            submitting:
+                "Հաշիվը ստեղծվում է...",
+            haveAccount:
+                "Արդեն հաշիվ ունե՞ք։",
+            loginLink: "Մուտք",
+        },
+
+        errors: {
+            loginFailed:
+                "Մուտքը չհաջողվեց։",
+            registrationFailed:
+                "Հաշիվը ստեղծել չհաջողվեց։",
+            passwordMismatch:
+                "Գաղտնաբառերը չեն համընկնում։",
         },
     },
 };
